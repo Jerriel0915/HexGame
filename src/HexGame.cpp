@@ -41,6 +41,11 @@ void HexGame::runTest() {
 			camp == RED ? camp = BLUE : camp = RED;
 			step++;
 			records.push(new HexRecord(row, col, (Camp)camp));
+
+			if (board->checkWin() != EMPTY) {
+				std::cout << "恭喜 " << (board->checkWin() == RED ? "红方" : "蓝方") << " 获胜！" << std::endl;
+				break;
+			}
 		}
 		else {
 			std::cout << "落子非法！请重试！" << std::endl;

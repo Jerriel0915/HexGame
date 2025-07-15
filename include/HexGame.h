@@ -11,6 +11,7 @@ private:
 	Camp camp = EMPTY;					//< 当前阵营
 	int step = 0;						//< 已经过的步数
 	std::stack<HexRecord*> records;		//< 记录
+
 public:
 	HexGame() = default;
 	~HexGame() = default;

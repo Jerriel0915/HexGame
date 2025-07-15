@@ -7,7 +7,10 @@
 
 class Board {
 private:
-	std::vector<std::vector<Camp>> board_map;		// 棋盘
+	/**
+	 * @brief 棋盘，其中上下边界为红方，左右边界为蓝方
+	 */
+	std::vector<std::vector<Camp>> board_map;
 
 public:
 	Board();
@@ -39,6 +42,25 @@ public:
 	 * @return -1:设置失败 0:设置成功
 	 */
 	int setColor(int _row, int _col, Camp _camp);
+
+	/**
+	 * @brief 检查获胜
+	 * @return (Camp) EMPTY:无人获胜 RED:红方获胜 BLUE:蓝方获胜
+	 */
+	Camp checkWin();
+
+
+
+private:
+	/**
+	 * @brief checkWin()辅助函数，使用DFS
+	 * @param _vis 历史访问
+	 * @param _row 行
+	 * @param _col 列
+	 * @param _camp 阵营
+	 * @return 满足获胜条件
+	 */
+	bool checkWinDFS(bool (&_vis)[MAX_ROW][MAX_COL], int _row, int _col, Camp _camp);
 
 public:
 	void printTest() const ;
