@@ -12,7 +12,7 @@ endif()
 project ("HexGame")
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (HexGame "src/mainApp.cpp"  "include/Board.h" "include/GLOBAL.h" "include/HexGame.h" "include/HexRecord.h" "src/Board.cpp" "src/HexGame.cpp"  "test/BoardTest.cpp")
+add_executable (HexGame "src/mainApp.cpp"  "include/Board.h" "include/GLOBAL.h"  "src/Board.cpp"  "test/BoardTest.cpp" "include/Utils.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET HexGame PROPERTY CXX_STANDARD 20)
