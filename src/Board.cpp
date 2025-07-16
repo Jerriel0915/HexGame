@@ -1,6 +1,8 @@
 #include "../include/Board.h"
 #include <iostream>
 #include <random>
+#include <stdexcept>
+#include <algorithm>
 
 bool Board::checkOutOfBounds(int _row, int _col) const {
 	if (_row <= 0 || _row >= MAX_ROW - 1 ||
@@ -9,23 +11,6 @@ bool Board::checkOutOfBounds(int _row, int _col) const {
 	}
 	else {
 		return false;
-	}
-}
-
-bool Board::checkEmpty(int _row, int _col) const {
-	return board_map[_row][_col] == EMPTY;
-}
-
-int Board::setColor(int _row, int _col, Camp _camp) {
-	if (_camp == EMPTY) {
-		return -1;
-	}
-	if (checkOutOfBounds(_row, _col) == true || checkEmpty(_row, _col) == false) {
-		return -1;
-	}
-	else {
-		board_map[_row][_col] = _camp;
-		return 1;
 	}
 }
 
@@ -99,18 +84,19 @@ Board Board::make_move(int _row, int _col) const {
 	new_board_map[_row][_col] = turn;
 	Camp next_turn = (turn == RED) ? BLUE : RED;
 	Camp winner = checkWin(new_board_map);
-	bool is_terminal = (winner != EMPTY);
+	bool is_terminal = (winner != EMPTY) || all_filled(new_board_map);
 
 	return Board(new_board_map, next_turn, winner, is_terminal); // 返回新的棋盘状态
 }
 
 std::vector<Board> Board::find_children() const {
-	if (terminal) {
-		return {}; // 如果是终态，返回空向量
-	}
 	std::vector<Board> children;
-	for (int _col = 1; _col <= MAX_COL - 2; _col++) {
-		for (int _row = 1; _row <= MAX_ROW - 2; _row++) {
+	if (terminal) {
+		return children; // 如果是终态，返回空向量
+	}
+	
+	for (int _row = 1; _row <= MAX_ROW - 2; _row++) {
+		for (int _col = 1; _col <= MAX_ROW - 2; _col++) {
 			if (board_map[_row][_col] == EMPTY) {
 				children.emplace_back(make_move(_row, _col));
 			}
@@ -143,18 +129,18 @@ Board Board::find_random_child() const {
 	return make_move(_row, _col); // 返回随机子节点
 }
 
-double Board::reward() const {
+float Board::reward(Camp perspective) const {
 	if (!terminal) {
 		throw std::runtime_error("reward called on non-terminal board!");
 	}
-	if (winner == turn) {
-		return 1.0;		// 当前阵营获胜
+	if (winner == perspective) {
+		return 1.0;
 	}
 	else if (winner == EMPTY) {
-		return 0.5;		// 无人获胜
+		return 0.5;
 	}
 	else {
-		return 0.0;		// 对方阵营获胜
+		return 0.0;
 	}
 }
 
@@ -164,6 +150,17 @@ bool Board::is_terminal() const {
 
 Camp Board::getTurn() const {
 	return turn;
+}
+
+bool Board::all_filled(const std::vector<std::vector<Camp>>& _board_map) const {
+	for (const auto& row : _board_map) {
+		for (const auto& cell : row) {
+			if (cell == EMPTY) {
+				return false; // 只要有一个空格，就不是全填充
+			}
+		}
+	}
+	return true; // 全部格子都被填充
 }
 
 void Board::printTest() const {

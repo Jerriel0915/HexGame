@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 #include "../include/GLOBAL.h"
 #include <vector>
 
@@ -26,3 +29,4 @@ public:
 	}
 };
 
+#endif // !UTILS_H

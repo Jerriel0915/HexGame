@@ -1,8 +1,8 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-static const int MAX_ROW = 6;
-static const int MAX_COL = 6;
+static const int MAX_ROW = 8;
+static const int MAX_COL = 8;
 
 /**
  * @brief ’Û”™–≈œ¢ EMPTY=0; RED=1; BLUE=2
